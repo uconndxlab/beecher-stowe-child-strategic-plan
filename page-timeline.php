@@ -3,7 +3,7 @@
 /** Timeline Template, page-timeline.php */
 get_header(); ?>
 
-<div class="timeline-wrap container mt-4 timeline">
+<div class="timeline-wrap mt-4 timeline">
 
     <div class="timeline-element circle-orange-green left">
         <div class="timeline-photo">
