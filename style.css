@@ -18,6 +18,11 @@
   --timeline-pink:#D9009C;
 }
 
+#uc-header, #masthead {
+  position:relative;
+  z-index: 9999;
+}
+
 body:has(.timeline-wrap){
   background-color:var(--background-blue);
 }
@@ -71,17 +76,18 @@ body:has(.timeline-wrap){
 }
 
 /* Place the container to the left */
-.timeline-wrap .left {
+/* Place the container to the left */
+.timeline-wrap .timeline-element:nth-child(even) {
   left: 0;
 }
 
 /* Place the container to the right */
-.timeline-wrap .right {
+.timeline-wrap .timeline-element:nth-child(odd) {
   left: 50%;
 }
 
 /* Fix the circle for containers on the right side */
-.timeline-wrap .right::after {
+.timeline-wrap .timeline-element:nth-child(odd)::after {
   left: -17px;
 }
 
