@@ -18,6 +18,10 @@
   --timeline-pink:#D9009C;
 }
 
+.text-white{
+  color:white;
+}
+
 #uc-header, #masthead {
   position:relative;
   z-index: 9999;
@@ -41,6 +45,9 @@ body:has(.timeline-wrap){
   padding-left:5px;
 }
 
+.timeline {
+  position: relative;
+}
 
 /* The actual timeline (the vertical ruler) */
 .timeline::after {
@@ -52,6 +59,7 @@ body:has(.timeline-wrap){
   bottom: 0;
   left: 50%;
   margin-left: -3px;
+
 }
 
 /* Container around content */
@@ -109,6 +117,7 @@ body:has(.timeline-wrap){
   font-weight:500;
   background-color:var(--timeline-red);
   padding:0px 5px;
+  cursor: pointer;
 }
 
 .timeline-tag-2{
@@ -156,7 +165,7 @@ body:has(.timeline-wrap){
 
 /*tooltip*/  
 .timeline-tag .tooltiptext,  .timeline-tag-2 .tooltiptext {
-  visibility: hidden;
+  opacity: 0;
   width: 100%;
   background-color: black;
   color: #fff;
@@ -166,6 +175,8 @@ body:has(.timeline-wrap){
   bottom: 100%;
   left: 50%;
   margin-left: 0%;
+  transition: opacity 0.4s;
+
 
   /* Position the tooltip */
   position: absolute;
@@ -173,14 +184,9 @@ body:has(.timeline-wrap){
 }
 
 .timeline-tag:hover .tooltiptext,  .timeline-tag-2:hover .tooltiptext {
-  visibility: visible;
-  background-color:white;
-  border:2px solid #515151;
-  border-radius:0px;
-  color:#000;
-  text-align:left;
-  padding:5px 10px;
-  font-weight:400;
+  opacity: 1;
+
+
 }
 
 /*button stuff*/
@@ -210,7 +216,7 @@ body:has(.timeline-wrap){
   text-decoration: none !important;
 }
 
-.timeline-wrap .btn:hover,.btn:focus{
+.timeline-wrap .btn:hover, .timeline-wrap .btn:focus{
   background-color: #03357a!important;
   background-image: linear-gradient(90deg, #03357a 50%, #F0F3F7 50%)!important;
   color: #fff !important;
