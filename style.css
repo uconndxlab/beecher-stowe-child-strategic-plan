@@ -207,6 +207,28 @@ body:has(.timeline-wrap){
   background-image: -webkit-linear-gradient(180deg, var(--timeline-orange) 50%, var(--timeline-green) 50%);
 }
 
+.circle-red-pink::after{
+  background-image: -webkit-linear-gradient(180deg, var(--timeline-red) 50%, var(--timeline-pink) 50%);
+}
+
+.circle-blue-purple::after{
+  background-image: -webkit-linear-gradient(180deg, var(--timeline-blue) 50%, var(--timeline-purple) 50%);
+}
+
+.circle-purple-blue::after{
+  background-image: -webkit-linear-gradient(180deg, var(--timeline-purple) 50%, var(--timeline-blue) 50%);
+}
+
+.circle-green-orange::after{
+  background-image: -webkit-linear-gradient(180deg, var(--timeline-green) 50%, var(--timeline-orange) 50%);
+}
+
+.circle-pink-red::after{
+  background-image: -webkit-linear-gradient(180deg, var(--timeline-pink) 50%, var(--timeline-red) 50%);
+}
+
+
+
 /*tooltip*/  
 .timeline-tag .tooltiptext,  .timeline-tag-2 .tooltiptext {
   opacity: 0;
