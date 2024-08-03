@@ -115,7 +115,6 @@ get_header(); ?>
                         <p class="timeline-tag tag-<?php echo $area['color']; ?>
                         <?php echo "timeline-tag-" . $count++; ?>
                         "><?php echo $area['name']; ?>
-                            <span class="tooltiptext"><?php echo $priority_action_text; ?></span>
                         </p>
                     <?php
                     }
@@ -125,6 +124,13 @@ get_header(); ?>
                     <small class="timeline-date"><?php echo $timeline_date; ?></small>
                     <h3><?php echo $timeline_title; ?></h3>
                     <p><?php echo $timeline_content; ?></p>
+                    <!-- if there is a priority action text, display it -->
+                    <?php if ($priority_action_text) { ?>
+                        <div class="priority-action">
+                            <h5>Priority Action</h5>
+                            <p class="priority-action-text"><?php echo $priority_action_text; ?></p>
+                        </div>
+                    <?php } ?>
                     <a href="<?php echo $timeline_link; ?>" class="btn btn-default">CONTINUE READING</a>
                 </div>
             </div>
