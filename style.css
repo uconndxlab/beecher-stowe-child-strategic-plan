@@ -29,44 +29,48 @@
   transform: translateY(0px);
 }
 
-/* make the timeline items fade in on page load */
-.timeline-wrap .timeline-element:nth-child(even){
-  animation: fadeInLeft 1s ease-in-out;
-  border-left: 5px solid #fff;
-}
-
-.timeline-wrap .timeline-element:nth-child(odd){
-  animation: fadeInRight 1s ease-in-out;
-  border-right: 5px solid #fff;
-  position: relative;
-  left: 5px;
-}
-
-@keyframes fadeInLeft {
-  0% {
-    opacity: 0;
-    transform: translateX(-50px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes fadeInRight {
-  0% {
-    opacity: 0;
-    transform: translateX(50px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
 
 #categoryFilter{
   max-width: 500px;
 }
+
+
+.timeline-wrap .timeline-element .timeline-photo, .timeline-wrap .timeline-element .timeline-details{
+  opacity: 0;
+  transform: translateX(0); /* Neutral position */
+  transition: all 1s ease-in-out;
+  position: relative;
+}
+
+.timeline-wrap .timeline-element:nth-child(even) .timeline-photo, .timeline-wrap .timeline-element:nth-child(even) .timeline-details{
+
+  transform: translateX(-50px); /* Slide in from the left */
+}
+
+.timeline-wrap .timeline-element:nth-child(odd) .timeline-photo, .timeline-wrap .timeline-element:nth-child(odd) .timeline-details{
+
+  transform: translateX(50px); /* Slide in from the right */
+}
+
+.timeline-wrap .timeline-element::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: #fff;
+}
+
+.timeline-wrap .timeline-element:nth-child(even)::before {
+  left: 0;  /* Align border to the left for even elements */
+}
+
+.timeline-wrap .timeline-element:nth-child(odd)::before {
+  right: -4px; /* Align border to the right for odd elements */
+}
+
+
+
 
 
 
@@ -81,7 +85,11 @@
 }
 
 body:has(.timeline-wrap){
-  background-color:var(--background-blue);
+  background:url(https://strategicplan.media.uconn.edu/wp-content/uploads/sites/3794/2024/01/skyline191015a0646.jpg);
+  background-size:cover;
+  background-attachment: fixed;
+  /** add an overlay to the background image **/
+  background-image: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.5)), url(https://strategicplan.media.uconn.edu/wp-content/uploads/sites/3794/2024/01/skyline191015a0646.jpg);
 }
 
 .timeline-wrap{
@@ -92,6 +100,7 @@ body:has(.timeline-wrap){
 .timeline-wrap h3{
   font-size:24px!important;
   padding-top:5px;
+  line-height: 1.2;
 }
 
 .timeline-wrap sup{
@@ -141,12 +150,23 @@ body:has(.timeline-wrap){
 
 /* Fix the circle for containers on the right side */
 .timeline-wrap .timeline-element:nth-child(even)::after {
-  left: -19px;
+  left: -16px;
 }
 
 
 .timeline-photo {
   position: relative;
+  border-radius:30px 0px 0px 0px;
+}
+
+.timeline-element:hover .timeline-photo img{
+  
+  transition: all 0.3s;
+}
+
+.timeline-element:hover .timeline-details{
+ background-color:#fff;
+  transition: all 0.3s;
 }
 
 .timeline-photo img{
@@ -178,6 +198,7 @@ body:has(.timeline-wrap){
   padding-right: 20px;
   padding-top: 12px;
   width:100%;
+  line-height: 1.2;
 }
 
 .timeline-tag small, .priority-action small{
@@ -197,8 +218,9 @@ body:has(.timeline-wrap){
 
 .timeline-details{
   padding:10px 20px 20px 20px;
-  background-color:white;
+  background-color:rgba(255,255,255,0.9);
   border-radius:0px 0px 30px 0px;
+  transition: all 0.3s;
 }
 
 .timeline-date{
@@ -367,6 +389,9 @@ body:has(.timeline-wrap){
   background-color: #ccc;
 }
 
+#timeline-app {
+  
+}
 
 
 
@@ -489,8 +514,7 @@ body:has(.timeline-wrap){
 /* Full-width containers */
   .timeline-element {
     width: 100%;
-    padding-left: 70px;
-    padding-right: 0px;
+    margin:0 auto;
   }
 
 /* Make sure that all arrows are pointing leftwards */
@@ -502,12 +526,34 @@ body:has(.timeline-wrap){
   }
 
 /* Make sure all circles are at the same spot */
- .timeline-wrap .left::after, .timeline-wrap .right::after {
-    left: 5px;
+ .timeline-wrap .timeline-element::after {
+    left: 25px!important;
   }
 
 /* Make all right containers behave like the left ones */
- .timeline-wrap .right {
+ .timeline-wrap .timeline-element:nth-child(even) {
     left: 0%;
   }
+
+   /** Hide the left border on the timeline **/
+   .timeline-wrap .timeline-element::before {
+    display: none;
+  }
+
+  /** Make the timeline elements full width but no wider than 100% **/
+  .timeline-wrap .timeline-element {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .timeline-photo{
+    max-width: 100%;
+  }
+
+  /** condense the timeline filter menu on mobile **/
+  .timeline-filter {
+    display: none;
+  }
+
+
 }

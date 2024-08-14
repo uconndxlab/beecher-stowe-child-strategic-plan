@@ -1,13 +1,13 @@
 <?php
 
 /** Timeline Template, page-timeline.php */
-get_header(); 
+get_header();
 
 
 
 $args = array(
     'post_type' => 'timeline-item',
-    'posts_per_page' => 5,
+    'posts_per_page' => -1,
     'paged' => get_query_var('paged'),
 );
 
@@ -19,7 +19,7 @@ if (isset($_GET['aof'])) {
             'taxonomy' => 'area-of-focus',
             'field' => 'slug',
             'terms' => $_GET['aof'],
-            'per_page' => 5,
+            'per_page' => -1,
             'paged' => get_query_var('paged'),
         ),
     );
@@ -42,31 +42,31 @@ $timeline_items = new WP_Query($args);
 
     </div>
 </div>
-<div class="row">
-        <div class="col-md-12">
-            <div class="pagination">
-                <?php
-                $pagination_links = paginate_links(array(
-                    'total' => $timeline_items->max_num_pages,
-                    'type' => 'array', // Return the links as an array
-                    'prev_text' => __('&laquo; Prev'),
-                    'next_text' => __('View More'), // Change "Next" to "View More"
-                ));
+<div class="row d-none">
+    <div class="col-md-12">
+        <div class="pagination">
+            <?php
+            $pagination_links = paginate_links(array(
+                'total' => $timeline_items->max_num_pages,
+                'type' => 'array', // Return the links as an array
+                'prev_text' => __('&laquo; Prev'),
+                'next_text' => __('View More'), // Change "Next" to "View More"
+            ));
 
-                if (!empty($pagination_links)) {
-                    foreach ($pagination_links as $link) {
-                        // Only modify the "next" page link to append content
-                        if (strpos($link, 'next page-numbers')) {
-                            echo str_replace('<a', '<a hx-get="' . esc_url(get_pagenum_link()) . '" hx-select="#timeline-app" hx-target="#timeline-app" hx-swap="beforeend"', $link);
-                        } else {
-                            echo $link;
-                        }
+            if (!empty($pagination_links)) {
+                foreach ($pagination_links as $link) {
+                    // Only modify the "next" page link to append content
+                    if (strpos($link, 'next page-numbers')) {
+                        echo str_replace('<a', '<a hx-get="' . esc_url(get_pagenum_link()) . '" hx-select="#timeline-app" hx-target="#timeline-app" hx-swap="beforeend"', $link);
+                    } else {
+                        echo $link;
                     }
                 }
-                ?>
-            </div>
+            }
+            ?>
         </div>
     </div>
+</div>
 <section id="timeline-app">
 
     <div class="row">
@@ -148,13 +148,17 @@ $timeline_items = new WP_Query($args);
                     }
             ?>
             ">
-                        <div class="timeline-photo">
+                        <div class="timeline-photo-wrap">
                             <img class="timeline-photo" src="<?php echo $timeline_photo; ?>" width="100%" height="200px" alt="husky">
 
                         </div>
                         <div class="timeline-details">
                             <small class="timeline-date"><?php echo $timeline_date; ?></small>
-                            <h3><?php echo $timeline_title; ?></h3>
+                            <h3>
+                                <a href="<?php echo $timeline_link; ?>" target="_blank">
+                                <?php echo $timeline_title; ?>
+                                </a>
+                            </h3>
                             <p><?php echo $timeline_content; ?></p>
 
                             <?php
@@ -194,7 +198,7 @@ $timeline_items = new WP_Query($args);
                             ?>
 
 
-                            <a href="<?php echo $timeline_link; ?>" class="btn btn-default">CONTINUE READING</a>
+                            <a target="_blank" href="<?php echo $timeline_link; ?>" class="btn btn-default">CONTINUE READING</a>
                         </div>
                     </div>
 
@@ -234,6 +238,42 @@ $timeline_items = new WP_Query($args);
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const elements = document.querySelectorAll('.timeline-element');
+
+            function isElementInViewport(el) {
+                const rect = el.getBoundingClientRect();
+                return (
+                    rect.top <= (window.innerHeight || document.documentElement.clientHeight) * 0.8 && // Adjust this value for sooner activation
+                    rect.bottom >= 0
+                );
+            }
+
+            function checkElements() {
+                elements.forEach(function(el) {
+                    if (isElementInViewport(el)) {
+
+                        var details = el.querySelector('.timeline-details');
+                        var photo = el.querySelector('.timeline-photo');
+
+                        details.style.opacity = 1;
+                        details.style.transform = 'translateX(0)'; // Reset to the neutral position
+
+                        photo.style.opacity = 1;
+                        photo.style.transform = 'translateX(0)'; // Reset to the neutral position
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', checkElements);
+            window.addEventListener('resize', checkElements);
+
+            // Initial check
+            checkElements();
+        });
+    </script>
 
 </section>
 
