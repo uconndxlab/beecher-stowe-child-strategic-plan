@@ -42,62 +42,55 @@ $timeline_items = new WP_Query($args);
 
     </div>
 </div>
-<div class="row d-none">
-    <div class="col-md-12">
-        <div class="pagination">
-            <?php
-            $pagination_links = paginate_links(array(
-                'total' => $timeline_items->max_num_pages,
-                'type' => 'array', // Return the links as an array
-                'prev_text' => __('&laquo; Prev'),
-                'next_text' => __('View More'), // Change "Next" to "View More"
-            ));
+<div class="row">
 
-            if (!empty($pagination_links)) {
-                foreach ($pagination_links as $link) {
-                    // Only modify the "next" page link to append content
-                    if (strpos($link, 'next page-numbers')) {
-                        echo str_replace('<a', '<a hx-get="' . esc_url(get_pagenum_link()) . '" hx-select="#timeline-app" hx-target="#timeline-app" hx-swap="beforeend"', $link);
-                    } else {
-                        echo $link;
-                    }
-                }
+    <div class="col-md-6 timeline-filter">
+
+        <h4>Filter by Area of Focus &#8628;</h4>
+
+
+        <ul>
+            <li>
+                <a href="<?php the_permalink(); ?>" class=" filter view-all" data-filter="*">
+                    <span class="circle" style="background-color: #000e2f"></span>All Areas of Focus
+                </a>
+
+            </li>
+            <?php
+            $args = array(
+                'taxonomy' => 'area-of-focus',
+                'hide_empty' => false,
+            );
+
+            $terms = get_terms($args);
+
+            foreach ($terms as $term) {
+                echo '<li class="timeline-filter-item';
+
+                if (isset($_GET['aof']) && $_GET['aof'] == $term->slug) {
+                    echo ' active"';
+                } else echo '"';
+
+                echo '>';
+
+                echo '<a 
+                hx-get="?aof=' . $term->slug . '"
+                hx-select="#timeline-app"
+                hx-target="#timeline-app"
+                hx-swap="outerHTML"
+                href="?aof=' . $term->slug . '"' . ' class="filter" data-filter=".' . $term->slug . '">';
+                echo '<span class="circle bg-' . get_field('color', $term) . '"></span> ' . $term->name . '</a></li>';
             }
             ?>
-        </div>
+        </ul>
     </div>
 </div>
 <section id="timeline-app">
+    <div class="container">
 
-    <div class="row">
-        <div class="timeline-wrap mt-4 timeline container">
+        <div class="timeline-wrap mt-4 timeline row">
 
-            <div class="col-md-6 timeline-filter">
-                <h4>Filter by Area of Focus <small>[<a href="<?php the_permalink(); ?>">View All</a>]</small></h4>
-                <ul>
-                    <?php
-                    $args = array(
-                        'taxonomy' => 'area-of-focus',
-                        'hide_empty' => false,
-                    );
-
-                    $terms = get_terms($args);
-
-                    foreach ($terms as $term) {
-                        echo '<li class="timeline-filter-item';
-
-                        if (isset($_GET['aof']) && $_GET['aof'] == $term->slug) {
-                            echo ' active"';
-                        } else echo '"';
-
-                        echo '>';
-
-                        echo '<a href="?aof=' . $term->slug . '"' . ' class="filter" data-filter=".' . $term->slug . '">';
-                        echo '<span class="circle" style="background-color:' . get_field('color', $term) . '"></span>' . $term->name . '</a></li>';
-                    }
-                    ?>
-                </ul>
-            </div>
+            <div class="col-md-6"></div>
 
             <?php
 
@@ -134,9 +127,11 @@ $timeline_items = new WP_Query($args);
 
             ?>
 
+
                     <div class="timeline-element
             col-md-6
             <?php if ($timeline_items->current_post % 2 == 0 && $timeline_items->current_post != 0) {
+
                         echo 'col-md-offset-6';
                     } ?>
             <?php
@@ -156,7 +151,7 @@ $timeline_items = new WP_Query($args);
                             <small class="timeline-date"><?php echo $timeline_date; ?></small>
                             <h3>
                                 <a href="<?php echo $timeline_link; ?>" target="_blank">
-                                <?php echo $timeline_title; ?>
+                                    <?php echo $timeline_title; ?>
                                 </a>
                             </h3>
                             <p><?php echo $timeline_content; ?></p>
@@ -170,7 +165,12 @@ $timeline_items = new WP_Query($args);
                                     <p class="timeline-tag tag-<?php echo $area['color']; ?>
                             <?php echo "timeline-tag-" . $count++; ?>
                         ">
-                                        <small>Area of Focus</small>
+                                        <?php if ($count == 2): ?>
+                                            <small>Area of Focus</small>
+                                        <?php else : ?>
+                                            <small>Area of Focus</small>
+                                        <?php endif; ?>
+
                                         <?php echo $area['name']; ?>
                                     </p>
 
@@ -187,7 +187,10 @@ $timeline_items = new WP_Query($args);
                                     <!-- if there is a priority action text 2, display it -->
                                     <?php if ($priority_action_text_2 and $count == 3) { ?>
                                         <div class="priority-action bg-<?php echo $areas_of_focus[array_key_last($areas_of_focus)]['color']; ?>">
-                                            <p class="priority-action-text"><?php echo $priority_action_text_2; ?></p>
+                                            
+                                            <p class="priority-action-text">
+                                            <small>Priority Action</small>    
+                                            <?php echo $priority_action_text_2; ?></p>
                                         </div>
                                     <?php       } ?>
 
@@ -197,8 +200,9 @@ $timeline_items = new WP_Query($args);
                             <?php endforeach;
                             ?>
 
-
-                            <a target="_blank" href="<?php echo $timeline_link; ?>" class="btn btn-default">CONTINUE READING</a>
+                            <div class='timeline-link-wrap'>
+                                <a target="_blank" href="<?php echo $timeline_link; ?>" class="btn btn-default">CONTINUE READING</a>
+                            </div>
                         </div>
                     </div>
 
@@ -241,7 +245,6 @@ $timeline_items = new WP_Query($args);
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const elements = document.querySelectorAll('.timeline-element');
 
             function isElementInViewport(el) {
                 const rect = el.getBoundingClientRect();
@@ -252,6 +255,9 @@ $timeline_items = new WP_Query($args);
             }
 
             function checkElements() {
+                const elements = document.querySelectorAll('.timeline-element');
+
+                console.log('checking elements');
                 elements.forEach(function(el) {
                     if (isElementInViewport(el)) {
 
@@ -272,6 +278,16 @@ $timeline_items = new WP_Query($args);
 
             // Initial check
             checkElements();
+
+            // when filter h4 is clicked, toggle the class active on .timeline-filter
+            document.querySelector('.timeline-filter h4').addEventListener('click', function() {
+                document.querySelector('.timeline-filter').classList.toggle('active');
+            });
+
+            document.addEventListener('htmx:afterSwap', function(evt) {
+                // after the swap is complete, check the elements again
+                checkElements();
+            });
         });
     </script>
 
