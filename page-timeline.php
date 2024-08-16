@@ -42,7 +42,11 @@ $timeline_items = new WP_Query($args);
 
     </div>
 </div>
-<div class="row">
+
+<section id="timeline-app">
+    <div class="container">
+
+    <div class="row">
 
     <div class="col-md-6 timeline-filter">
 
@@ -85,8 +89,6 @@ $timeline_items = new WP_Query($args);
         </ul>
     </div>
 </div>
-<section id="timeline-app">
-    <div class="container">
 
         <div class="timeline-wrap mt-4 timeline row">
 

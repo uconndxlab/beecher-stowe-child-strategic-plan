@@ -243,6 +243,7 @@ body:has(.timeline-wrap){
   margin-bottom: 20px;
   transition: 0.5s;
   z-index: 9999;
+  padding-top:25px;
 }
 
 
@@ -308,6 +309,23 @@ body:has(.timeline-wrap){
 
 .timeline-filter a:hover .circle {
   border-color: #91b1db;
+}
+
+.timeline-filter li.active {
+  padding-left:15px;
+  /** animate the padding from 0-15px slowly **/
+  transition: 0.5s;
+  animation: slideLI 0.5s;
+}
+
+@keyframes slideLI {
+  0% {
+    padding-left: 0px;
+  }
+  100% {
+    padding-left: 15px;
+  }
+  
 }
 
 .timeline-filter li.active a{
