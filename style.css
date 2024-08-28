@@ -244,6 +244,17 @@ body:has(.timeline-wrap){
   transition: 0.5s;
   z-index: 9999;
   padding-top:25px;
+  max-width: 500px;
+}
+
+.timeline-filter p.timeline-filter-description {
+  color: #fff;
+  font-size: 14px;
+  border-left: 4px solid white;
+  padding-left: 15px;
+  margin-left: 15px;
+  max-height: 0px;
+  overflow: hidden;
 }
 
 
@@ -312,10 +323,28 @@ body:has(.timeline-wrap){
 }
 
 .timeline-filter li.active {
-  padding-left:15px;
   /** animate the padding from 0-15px slowly **/
   transition: 0.5s;
-  animation: slideLI 0.5s;
+}
+
+.timeline-filter li.active p.timeline-filter-description {
+  max-height: 400px;
+  margin-top:10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  transition: 0.5s;
+
+  animation: growHeight 0.5s ease-in-out;
+
+}
+
+@keyframes growHeight {
+  0% {
+    max-height: 0px;
+  }
+  100% {
+    max-height: 400px;
+  }
 }
 
 @keyframes slideLI {

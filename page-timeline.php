@@ -69,6 +69,7 @@ $timeline_items = new WP_Query($args);
             $terms = get_terms($args);
 
             foreach ($terms as $term) {
+                $term_description = $term->description;
                 echo '<li class="timeline-filter-item';
 
                 if (isset($_GET['aof']) && $_GET['aof'] == $term->slug) {
@@ -83,7 +84,11 @@ $timeline_items = new WP_Query($args);
                 hx-target="#timeline-app"
                 hx-swap="outerHTML"
                 href="?aof=' . $term->slug . '"' . ' class="filter" data-filter=".' . $term->slug . '">';
-                echo '<span class="circle bg-' . get_field('color', $term) . '"></span> ' . $term->name . '</a></li>';
+                echo '<span class="circle bg-' . get_field('color', $term) . '"></span> ' . $term->name . '</a>';
+                if ($term_description) {
+                    echo '<p class="timeline-filter-description">' . $term_description . '</p>';
+                }
+                echo '</li>';
             }
             ?>
         </ul>
