@@ -247,6 +247,11 @@ body:has(.timeline-wrap){
   max-width: 500px;
 }
 
+.timeline-filter a:hover {
+  text-decoration: underline;
+  color:#fff!important;
+}
+
 .timeline-filter p.timeline-filter-description {
   color: #fff;
   font-size: 14px;
