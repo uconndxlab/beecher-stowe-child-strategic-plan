@@ -33,13 +33,11 @@ $timeline_items = new WP_Query($args);
 
 <div class="row">
     <div class="col-md-12" style="margin-top: 50px;">
-        <h1 class="text-white timeline__sectionHead">Priorities in Action.</h1>
-        <p class="text-white timeline__lede ">
-            The priorities of UConn's strategic plan are brought to life through the work of our students, faculty, and staff.
-            Every day, the UConn community is executing on the goals of our strategic plan, across all areas of focus.
-            Explore the timeline below to see how the University is making an impact in the areas of focus that are most important to our community.
-        </p>
-
+        <!-- get the conent of the page -->
+        <?php if (have_posts()) : while (have_posts()) : the_post();
+                the_content();
+            endwhile;
+        endif; ?>
     </div>
 </div>
 
@@ -108,6 +106,9 @@ $timeline_items = new WP_Query($args);
                     $timeline_items->the_post();
                     // get the featured image
                     $timeline_photo = get_the_post_thumbnail_url(get_the_ID(), 'full');
+                    // get the image caption
+                    // Get the caption
+                    $timeline_photo_alt = get_post(get_post_thumbnail_id())->post_excerpt;
 
                     $areas_of_focus = array();
                     // the tags are custom taxonomy area-of-focus
@@ -151,7 +152,8 @@ $timeline_items = new WP_Query($args);
             ?>
             ">
                         <div class="timeline-photo-wrap">
-                            <img class="timeline-photo" src="<?php echo $timeline_photo; ?>" width="100%" height="200px" alt="husky">
+                            <img class="timeline-photo" src="<?php echo $timeline_photo; ?>" width="100%" height="200px" 
+                            alt="<?php echo $timeline_photo_alt; ?>">
 
                         </div>
                         <div class="timeline-details">
